@@ -1,0 +1,64 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Show do Milhão — ENEM Matemática</title><style>:root{font-family:system-ui,Arial;background:#090f2d;color:#fff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#203d91,#090f2d 65%);min-height:100vh}.wrap{max-width:820px;margin:auto;padding:22px}header{text-align:center}h1{font-size:clamp(28px,5vw,46px);margin:10px 0;color:#ffe179}p{line-height:1.5}.panel{background:#101d4e;border:2px solid #5d7bd2;border-radius:22px;padding:22px;box-shadow:0 10px 40px #0005;margin-top:20px}.top{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;color:#ffe179;font-weight:700}.progress{height:12px;background:#263763;border-radius:20px;overflow:hidden;margin:16px 0}.progress>div{height:100%;background:linear-gradient(90deg,#26d7c7,#ffe179);transition:width .3s}.question{font-size:clamp(18px,3vw,24px);font-weight:700;margin:20px 0;white-space:pre-line}.options{display:grid;gap:12px}.option{width:100%;background:#182c70;border:2px solid #5374c5;color:white;border-radius:12px;text-align:left;padding:15px;font-size:17px;cursor:pointer}.option:hover:not(:disabled){background:#2c4491}.option:disabled{cursor:default;opacity:.85}.correct{background:#086f51!important;border-color:#4ef1a3!important}.wrong{background:#922c45!important;border-color:#ff8393!important}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}button{font:inherit}button.action{background:#ffd55e;border:0;border-radius:12px;padding:12px 17px;font-weight:800;color:#111a38;cursor:pointer}button.action:disabled{opacity:.35;cursor:default}.feedback{padding:15px;border-radius:12px;background:#22366f;margin-top:15px;line-height:1.6}.hide{display:none}.muted{color:#b8c7ee}input{padding:12px;border-radius:9px;border:1px solid #8aa3e4;width:100%;max-width:360px;font-size:17px}.badge{display:inline-block;background:#384b87;border-radius:20px;padding:6px 13px;color:#ffe179}footer{text-align:center;color:#bac8e9;font-size:13px;padding:25px}</style></head><body><div class="wrap"><header><div class="badge">🎓 3ª série • Matemática ENEM</div><h1>🏆 SHOW DO MILHÃO</h1><strong>Desafio Matemática ENEM</strong><p class="muted">15 perguntas • 5 alternativas • dificuldade crescente</p></header><section class="panel" id="intro"><h2>Pronto para o desafio?</h2><p>Acertou? Avance e conquiste mais pontos! Errou? Veja a resolução e tente de novo em uma nova partida. Use as ajudas com estratégia.</p><label for="name">Nome do estudante (opcional)</label><p><input id="name" maxlength="45" placeholder="Digite seu nome"></p><p class="muted" id="best"></p><button class="action" id="start">🎮 COMEÇAR A JOGAR</button></section><section class="panel hide" id="game"><div class="top"><span id="round"></span><span id="points"></span><span id="level"></span><span id="timer"></span></div><div class="progress"><div id="bar"></div></div><div class="question" id="question"></div><div class="options" id="options"></div><div class="actions"><button class="action" id="fifty">✂️ Eliminar 2</button><button class="action" id="skip">⏭️ Pular (1x)</button><button class="action" id="hint">💡 Dica (1x)</button></div><div class="feedback hide" id="feedback" aria-live="polite"></div><div class="actions"><button class="action hide" id="next">Próxima pergunta →</button><button class="action" id="restart">↻ Reiniciar</button></div></section><section class="panel hide" id="end"><h2 id="result"></h2><p id="summary"></p><p class="muted" id="best2"></p><button class="action" id="again">🎮 Jogar novamente</button></section><footer>Questões autorais no estilo ENEM • Material didático para revisão de Matemática • Funciona offline</footer></div><script>
+const Q=[
+{q:'Uma camiseta custa R$ 80,00 e está com desconto de 25%. Qual será o preço final?',a:['R$ 20,00','R$ 55,00','R$ 60,00','R$ 65,00','R$ 75,00'],c:2,h:'Calcule 25% de 80 e subtraia do preço inicial.',e:'25% de 80 = 0,25 × 80 = 20. Preço final: 80 − 20 = R$ 60,00.'},
+{q:'Um ônibus percorre 180 km em 3 horas, mantendo velocidade constante. Qual é sua velocidade média?',a:['40 km/h','50 km/h','60 km/h','70 km/h','90 km/h'],c:2,h:'Velocidade média = distância ÷ tempo.',e:'180 ÷ 3 = 60 km/h.'},
+{q:'Uma receita usa 2 xícaras de farinha para fazer 8 bolinhos. Quantas xícaras são necessárias para 20 bolinhos?',a:['3','4','5','6','8'],c:2,h:'Use proporção direta: 2/8 = x/20.',e:'x = (2 × 20) ÷ 8 = 5 xícaras.'},
+{q:'As notas de uma aluna foram 6, 7, 8 e 9. Qual é a média aritmética?',a:['7','7,5','8','8,5','9'],c:1,h:'Some as notas e divida pela quantidade.',e:'(6 + 7 + 8 + 9) ÷ 4 = 30 ÷ 4 = 7,5.'},
+{q:'Uma conta de energia passou de R$ 150 para R$ 180. Qual foi o aumento percentual?',a:['15%','18%','20%','25%','30%'],c:2,h:'Divida o aumento pelo valor original.',e:'Aumento = 30. Logo 30/150 × 100 = 20%.'},
+{q:'Um aplicativo de transporte cobra R$ 6,00 fixos mais R$ 2,50 por quilômetro. Quanto custa uma corrida de 8 km?',a:['R$ 20,00','R$ 24,00','R$ 26,00','R$ 28,00','R$ 32,00'],c:2,h:'Custo = taxa fixa + preço por km × distância.',e:'6 + 2,50 × 8 = 6 + 20 = R$ 26,00.'},
+{q:'Um terreno retangular mede 12 m de comprimento e 7 m de largura. Qual é sua área?',a:['19 m²','38 m²','72 m²','84 m²','96 m²'],c:3,h:'Área do retângulo = comprimento × largura.',e:'12 × 7 = 84 m².'},
+{q:'Em uma urna há 3 bolas azuis, 5 vermelhas e 2 verdes. Ao retirar uma bola ao acaso, qual é a probabilidade de ser vermelha?',a:['20%','30%','40%','50%','60%'],c:3,h:'Casos favoráveis ÷ total de bolas.',e:'São 5 vermelhas em 10 bolas. 5/10 = 50%.'},
+{q:'Uma escola tem 240 estudantes. Se 35% participam de um projeto, quantos estudantes participam?',a:['72','80','84','90','96'],c:2,h:'Multiplique 240 por 0,35.',e:'240 × 0,35 = 84 estudantes.'},
+{q:'Um capital de R$ 1.200 é aplicado a juros simples de 2% ao mês por 5 meses. Qual será o montante?',a:['R$ 1.220','R$ 1.260','R$ 1.300','R$ 1.320','R$ 1.440'],c:3,h:'Juros simples: J = C × i × t. Montante = C + J.',e:'J = 1200 × 0,02 × 5 = 120. Montante = R$ 1.320.'},
+{q:'Uma escada de 10 m está apoiada numa parede. Sua base está a 6 m da parede. A que altura ela alcança?',a:['6 m','7 m','8 m','9 m','10 m'],c:2,h:'Use Pitágoras: altura² + 6² = 10².',e:'altura² = 100 − 36 = 64. Altura = 8 m.'},
+{q:'Uma função que representa o lucro de uma loja é L(x) = 15x − 300, em reais, onde x é o número de produtos vendidos. Quantos produtos devem ser vendidos para que o lucro seja zero?',a:['15','20','25','30','45'],c:1,h:'Resolva 15x − 300 = 0.',e:'15x = 300, portanto x = 20 produtos.'},
+{q:'Uma caixa-d’água cilíndrica tem raio interno de 2 m e altura de 3 m. Usando π = 3,14, qual é seu volume?',a:['12,56 m³','18,84 m³','25,12 m³','37,68 m³','75,36 m³'],c:3,h:'Volume do cilindro: V = πr²h.',e:'V = 3,14 × 2² × 3 = 37,68 m³.'},
+{q:'Uma população de bactérias dobra a cada 3 horas. Começando com 200 bactérias, quantas haverá após 12 horas?',a:['800','1.200','1.600','2.400','3.200'],c:4,h:'Em 12 horas ocorrem quatro duplicações.',e:'200 × 2⁴ = 200 × 16 = 3.200 bactérias.'},
+{q:'Um produto de R$ 1.000 sofre dois descontos sucessivos, de 20% e 10%. Qual é o preço final?',a:['R$ 700','R$ 710','R$ 720','R$ 730','R$ 800'],c:2,h:'Os descontos são aplicados um depois do outro, não somados.',e:'Após 20%: 1000 × 0,80 = 800. Após mais 10%: 800 × 0,90 = R$ 720.'}
+];
+let tm=null,left=0;const TIME=60;
+function best(){try{return +localStorage.getItem('enemBest')||0}catch(e){return 0}}
+function showBest(){const t=best()?`🏆 Recorde: ${best().toLocaleString('pt-BR')} pontos`:'';$('best').textContent=t;$('best2').textContent=t}
+function stopTimer(){clearInterval(tm)}
+function startTimer(){stopTimer();left=TIME;tick();tm=setInterval(()=>{left--;tick();if(left<=0){stopTimer();if(!locked)answer(-1,true)}},1000)}
+function tick(){$('timer').textContent=`⏱️ ${left}s`}
+let i=0,score=0,hits=0,locked=false,used,player='';
+const $=id=>document.getElementById(id);
+function show(id){['intro','game','end'].forEach(x=>$(x).classList.toggle('hide',x!==id))}
+function shuffle(){Q.forEach(q=>{const t=q.a[q.c];for(let k=q.a.length-1;k>0;k--){const r=Math.floor(Math.random()*(k+1));[q.a[k],q.a[r]]=[q.a[r],q.a[k]]}q.c=q.a.indexOf(t)})}
+function start(){shuffle();i=0;score=0;hits=0;used={fifty:false,skip:false,hint:false};player=$('name').value.trim();show('game');render()}
+function render(){
+ if(i>=Q.length){finish(true);return}
+ locked=false;const q=Q[i];startTimer();
+ $('round').textContent=`Questão ${i+1} de 15`;
+ $('points').textContent=`🏅 ${score.toLocaleString('pt-BR')} pontos`;
+ $('level').textContent=i<5?'🟢 Fácil':i<10?'🟡 Médio':'🔴 Difícil';
+ $('bar').style.width=`${i/15*100}%`;
+ $('question').textContent=q.q;$('options').innerHTML='';
+ q.a.forEach((a,j)=>{const b=document.createElement('button');b.className='option';b.textContent=`${'ABCDE'[j]}) ${a}`;b.onclick=()=>answer(j);$('options').appendChild(b)});
+ $('feedback').classList.add('hide');$('next').classList.add('hide');
+ $('fifty').disabled=used.fifty;$('skip').disabled=used.skip;$('hint').disabled=used.hint;
+}
+function answer(j,timeout){
+ if(locked)return;locked=true;stopTimer();
+ const q=Q[i],ok=j===q.c;
+ [...$('options').children].forEach((b,k)=>{b.disabled=true;if(k===q.c)b.classList.add('correct');if(k===j&&!ok)b.classList.add('wrong')});
+ if(ok){score+=1000*(i+1);hits++}
+ $('points').textContent=`🏅 ${score.toLocaleString('pt-BR')} pontos`;
+ $('feedback').innerHTML=`<strong>${ok?'✅ Resposta correta!':timeout?'⏰ Tempo esgotado!':'❌ Não foi dessa vez!'}</strong><br>${q.e}<br><small>${ok?'Continue para aumentar o desafio!':'Estude a resolução e tente novamente em outra partida.'}</small>`;
+ $('feedback').classList.remove('hide');
+ $('next').textContent=ok?'Próxima pergunta →':'Ver resultado';$('next').classList.remove('hide');
+ ['fifty','skip','hint'].forEach(x=>$(x).disabled=true);
+ $('next').onclick=()=>{if(ok){i++;render()}else finish(false)};
+}
+function finish(won){
+ stopTimer();try{if(score>best())localStorage.setItem('enemBest',score)}catch(e){}showBest();show('end');
+ $('result').textContent=won?(hits===15?'🏆 Você venceu o Desafio ENEM!':'🏁 Desafio concluído!'):'🎯 Fim de jogo!';
+ $('summary').textContent=`${player?player+', ':''}você acertou ${hits} de 15 questões e conquistou ${score.toLocaleString('pt-BR')} pontos. ${won?'Parabéns pelo desempenho!':'Revise as explicações e tente chegar mais longe.'}`;
+}
+showBest();$('start').onclick=start;$('again').onclick=start;$('restart').onclick=()=>{stopTimer();start()};
+$('fifty').onclick=()=>{if(locked||used.fifty)return;used.fifty=true;const q=Q[i];
+ [0,1,2,3,4].filter(x=>x!==q.c).slice(0,2).forEach(x=>{$('options').children[x].style.display='none'});$('fifty').disabled=true};
+$('hint').onclick=()=>{if(locked||used.hint)return;used.hint=true;$('feedback').textContent='💡 Dica: '+Q[i].h;$('feedback').classList.remove('hide');$('hint').disabled=true};
+$('skip').onclick=()=>{if(locked||used.skip)return;used.skip=true;i++;render()};
+</script></body></html>
